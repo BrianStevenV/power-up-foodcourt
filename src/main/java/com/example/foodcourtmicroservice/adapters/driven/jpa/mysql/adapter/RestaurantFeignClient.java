@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "restaurant-service", url = "http://localhost:8090")
 public interface RestaurantFeignClient {
-    @GetMapping("/users/{dniNumber}")
+    @GetMapping("/user/{dniNumber}")
     UserResponseDto getUserByDni(@PathVariable("dniNumber") String dniNumber);
 }

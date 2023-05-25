@@ -39,7 +39,7 @@ public class RestaurantRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
                     @ApiResponse(responseCode = "409", description = "Restaurant already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PreAuthorize("hasRole('ADMINISTRATOR_ROLE')")
+    @PreAuthorize("hasAuthority('ADMINISTRATOR_ROLE')")
     @PostMapping
     public ResponseEntity<Map<String, String>> createRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto) {
         restaurantHandler.saveRestaurantFeign(restaurantRequestDto);
@@ -52,7 +52,7 @@ public class RestaurantRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
                     @ApiResponse(responseCode = "409", description = "Plate already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PreAuthorize("hasRole('PROVIDER_ROLE')")
+    @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
     @PostMapping("plate")
     public ResponseEntity<Map<String,String>> createPlate(@RequestBody PlateRequestDto plateRequestDto){
         plateHandler.savePlate(plateRequestDto);
@@ -66,7 +66,7 @@ public class RestaurantRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
                     @ApiResponse(responseCode = "409", description = "Plate already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
-    @PreAuthorize("hasRole('PROVIDER_ROLE')")
+    @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
     @PutMapping
     public ResponseEntity<Map<String,String>> updatePlate(@Valid @RequestBody UpdatePlateRequestDto updatePlateRequestDto){
         plateHandler.updatePlate(updatePlateRequestDto);

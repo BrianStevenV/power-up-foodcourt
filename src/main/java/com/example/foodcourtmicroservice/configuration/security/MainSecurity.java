@@ -37,8 +37,8 @@ public class MainSecurity {
                 .csrf().disable()
                 .authorizeRequests(requests -> requests
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/actuator/health").permitAll()
-                        .requestMatchers("/restaurant/").hasRole("ADMINISTRATOR_ROLE")
-                        .requestMatchers("/restaurant/plate").hasRole("PROVIDER_ROLE")
+                        .requestMatchers("/restaurant/").hasAuthority("ADMINISTRATOR_ROLE")
+                        .requestMatchers("/restaurant/plate").hasAuthority("PROVIDER_ROLE")
                         .anyRequest().authenticated()
                 )
                 .formLogin().disable()
