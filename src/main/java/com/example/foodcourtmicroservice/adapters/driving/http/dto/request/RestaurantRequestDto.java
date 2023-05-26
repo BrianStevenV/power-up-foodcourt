@@ -1,6 +1,6 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.dto.request;
 
-import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RoleResponseDto;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;

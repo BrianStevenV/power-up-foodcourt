@@ -1,7 +1,7 @@
 package com.example.foodcourtmicroservice.configuration;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.CategoryMysqlAdapter;
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.FeignClientRestaurantAdapter;
+import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.PlateMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantFeignClient;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantMysqlAdapter;
@@ -24,57 +24,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @RequiredArgsConstructor
 public class BeanConfiguration {
-
-//    //Restaurant
-//    private final IRestaurantRepository restaurantRepository;
-//    private final IRestaurantEntityMapper restaurantEntityMapper;
-//
-//    //Feign client
-//    private final RestaurantFeignClient restaurantFeignClient;
-//
-//    //Plate
-//
-//    private final IPlateRepository plateRepository;
-//    private final IPlateEntityMapper plateEntityMapper;
-//
-//    //Category
-//    private final ICategoryRepository categoryRepository;
-//    private final ICategoryEntityMapper categoryEntityMapper;
-//
-//    @Bean
-//    public ICategoryPersistencePort categoryPersistencePort(){
-//        return new CategoryMysqlAdapter(categoryRepository,categoryEntityMapper);
-//    }
-//
-//    //No falta service port?
-//
-//    @Bean
-//    public IPlatePersistencePort platePersistencePort(){
-//        return new PlateMysqlAdapter(plateRepository,plateEntityMapper);
-//    }
-//    @Bean
-//    public IPlateServicePort plateServicePort(){
-//        return new PlateUseCase(platePersistencePort(),categoryPersistencePort());
-//    }
-//
-//
-//
-//
-//
-//    @Bean
-//    public IRestaurantExternalPersistencePort restaurantExternalPersistencePort(){
-//        return new RestaurantMysqlAdapter(restaurantRepository,restaurantEntityMapper);
-//    }
-//
-//    @Bean
-//    public IRestaurantExternalServicePort restaurantExternalServicePort(){
-//        return new FeignClientRestaurantAdapter(restaurantFeignClient,restaurantExternalPersistencePort());
-//    }
-//
-//    @Bean
-//    public FeignClientRestaurantAdapter feignClientRestaurantAdapter(){
-//        return new FeignClientRestaurantAdapter(restaurantFeignClient,restaurantExternalPersistencePort());
-//    }
 
     //Restaurant
     private final IRestaurantRepository restaurantRepository;
@@ -115,12 +64,12 @@ public class BeanConfiguration {
 
     @Bean
     public IRestaurantExternalServicePort restaurantExternalServicePort() {
-        return new FeignClientRestaurantAdapter(restaurantFeignClient, restaurantExternalPersistencePort());
+        return new FeignClientRestaurantUseCase(restaurantFeignClient, restaurantExternalPersistencePort());
     }
 
     @Bean
-    public FeignClientRestaurantAdapter feignClientRestaurantAdapter() {
-        return new FeignClientRestaurantAdapter(restaurantFeignClient, restaurantExternalPersistencePort());
+    public FeignClientRestaurantUseCase feignClientRestaurantAdapter() {
+        return new FeignClientRestaurantUseCase(restaurantFeignClient, restaurantExternalPersistencePort());
     }
 
 

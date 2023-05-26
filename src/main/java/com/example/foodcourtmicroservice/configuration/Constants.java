@@ -14,6 +14,8 @@ public class Constants {
     public static final String DESCRIPTION_MEAT_DISHES = "Animal flesh for consumption.";
 
 
+    public static final String NO_PROVIDER_PERMISSION = "The Role is not allowed for the action.";
+    public static final String DATA_DUPLICATE_RESTAURANT_DTO = "The name or NIT registered is already exist in the database.";
 
     public static final String UPDATE_PLATE_OK = "Updated information.";
     public static final String CATEGORY_EXCEPTION = "The Category is not exist in our system.";

@@ -11,14 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RestaurantHandlerImp implements IRestaurantHandler {
-//    private final IRestaurantServicePort restaurantServicePort;
-//    private final IRestaurantRequestMapper restaurantRequestMapper;
     private final IRestaurantExternalServicePort restaurantExternalServicePort;
-//    @Override
-//    public void saveRestaurant(RestaurantRequestDto restaurantRequestDto) {
-//        restaurantServicePort.saveRestaurant(restaurantRequestMapper.toRestaurant(restaurantRequestDto));
-//    }
-
     @Override
     public void saveRestaurantFeign(RestaurantRequestDto restaurantRequestDto) {
         restaurantExternalServicePort.saveRestaurantServiceFeign(restaurantRequestDto);
