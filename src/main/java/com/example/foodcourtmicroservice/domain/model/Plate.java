@@ -7,14 +7,16 @@ public class Plate {
     private Double price;
     private String urlImage;
     private Category id_category;
+    private Long idRestaurant;
 
-    public Plate(Long id, String name, String description, Double price, String urlImage, Category id_category) {
+    public Plate(Long id, String name, String description, Double price, String urlImage, Category id_category, Long idRestaurant) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.urlImage = urlImage;
         this.id_category = id_category;
+        this.idRestaurant = idRestaurant;
     }
     public Plate(){}
 
@@ -64,5 +66,13 @@ public class Plate {
 
     public void setId_category(Category id_category) {
         this.id_category = id_category;
+    }
+
+    public Long getIdRestaurant() {
+        return idRestaurant;
+    }
+
+    public void setIdRestaurant(Long idRestaurant) {
+        this.idRestaurant = idRestaurant;
     }
 }

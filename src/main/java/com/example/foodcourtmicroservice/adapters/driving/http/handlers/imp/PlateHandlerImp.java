@@ -15,8 +15,8 @@ public class PlateHandlerImp implements IPlateHandler {
     private final IPlateRequestMapper plateRequestMapper;
 
     @Override
-    public void savePlate(PlateRequestDto plateRequestDto) {
-        plateServicePort.savePlate(plateRequestMapper.toPlate(plateRequestDto));
+    public void savePlate(PlateRequestDto plateRequestDto, Long idRestaurant) {
+        plateServicePort.savePlate(plateRequestMapper.toPlate(plateRequestDto), idRestaurant);
     }
 
     @Override

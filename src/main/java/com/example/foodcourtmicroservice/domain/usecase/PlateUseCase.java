@@ -24,13 +24,13 @@ public class PlateUseCase implements IPlateServicePort {
     }
 
     @Override
-    public void savePlate(Plate plate) {
+    public void savePlate(Plate plate, Long idRestaurant) {
         Long categoryID = plate.getId_category().getId();
         CategoryStrategyFactory strategyFactory = new CategoryStrategyFactory();
         ICategoryStrategy categoryStrategy = strategyFactory.createStrategy(categoryID);
         categoryStrategy.assignCategoryDetails(plate, plate.getId_category());
+        plate.setIdRestaurant(idRestaurant);
         platePersistencePort.savePlate(plate);
-
         saveCategory(categoryStrategy);
     }
 

@@ -16,6 +16,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -53,9 +55,10 @@ public class RestaurantRestController {
                     @ApiResponse(responseCode = "409", description = "Plate already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
-    @PostMapping("plate")
-    public ResponseEntity<Map<String,String>> createPlate(@RequestBody PlateRequestDto plateRequestDto){
-        plateHandler.savePlate(plateRequestDto);
+    @PostMapping("plate/{nameRestaurant}")
+    public ResponseEntity<Map<String,String>> createPlate(@PathVariable("nameRestaurant") String nameRestaurant, @RequestBody PlateRequestDto plateRequestDto){
+        Long idRestaurant = restaurantHandler.getByNameRestaurant(nameRestaurant);
+        plateHandler.savePlate(plateRequestDto, idRestaurant);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.PLATE_CREATED_MESSAGE));
 
@@ -73,4 +76,6 @@ public class RestaurantRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_PLATE_OK));
     }
+
+    //TODO: To apply @Valid in the @RequestBody of endpoint's.
 }
