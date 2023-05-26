@@ -16,6 +16,5 @@ public class PlateRequestDto {
     private Double price;
     @NotBlank
     private String urlImage;
-    @NotBlank
-    private CategoryRequestDto id_category;
+
 }

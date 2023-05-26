@@ -4,6 +4,6 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Plate
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.UpdatePlateRequestDto;
 
 public interface IPlateHandler {
-    void savePlate(PlateRequestDto plateRequestDto, Long idRestaurant);
+    void savePlate(PlateRequestDto plateRequestDto, Long idRestaurant, String categoryPlate);
     void updatePlate(UpdatePlateRequestDto updatePlateRequestDto);
 }

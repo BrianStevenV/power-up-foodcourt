@@ -28,7 +28,7 @@ import java.util.Collections;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/restaurant/")
+@RequestMapping("/foodCourt/")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "jwt")
 public class RestaurantRestController {
@@ -42,7 +42,7 @@ public class RestaurantRestController {
                     @ApiResponse(responseCode = "409", description = "Restaurant already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('ADMINISTRATOR_ROLE')")
-    @PostMapping
+    @PostMapping("restaurant/")
     public ResponseEntity<Map<String, String>> createRestaurant(@Valid @RequestBody RestaurantRequestDto restaurantRequestDto) {
         restaurantHandler.saveRestaurantFeign(restaurantRequestDto);
         return ResponseEntity.status(HttpStatus.CREATED)
@@ -55,10 +55,10 @@ public class RestaurantRestController {
                     @ApiResponse(responseCode = "409", description = "Plate already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
-    @PostMapping("plate/{nameRestaurant}")
-    public ResponseEntity<Map<String,String>> createPlate(@PathVariable("nameRestaurant") String nameRestaurant, @RequestBody PlateRequestDto plateRequestDto){
+    @PostMapping("plate/{nameRestaurant}/{categoryPlate}")
+    public ResponseEntity<Map<String,String>> createPlate(@PathVariable("nameRestaurant") String nameRestaurant, @PathVariable("categoryPlate") String categoryPlate, @Valid @RequestBody PlateRequestDto plateRequestDto){
         Long idRestaurant = restaurantHandler.getByNameRestaurant(nameRestaurant);
-        plateHandler.savePlate(plateRequestDto, idRestaurant);
+        plateHandler.savePlate(plateRequestDto, idRestaurant, categoryPlate);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.PLATE_CREATED_MESSAGE));
 
@@ -70,12 +70,13 @@ public class RestaurantRestController {
                     @ApiResponse(responseCode = "409", description = "Plate already exists",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
-    @PutMapping
+    @PutMapping("plate/")
     public ResponseEntity<Map<String,String>> updatePlate(@Valid @RequestBody UpdatePlateRequestDto updatePlateRequestDto){
         plateHandler.updatePlate(updatePlateRequestDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_PLATE_OK));
     }
+    //TODO: Put exception error input DTO.
 
     //TODO: To apply @Valid in the @RequestBody of endpoint's.
 }

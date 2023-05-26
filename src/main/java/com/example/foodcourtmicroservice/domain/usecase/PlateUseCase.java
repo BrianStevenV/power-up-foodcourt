@@ -4,13 +4,9 @@ import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateE
 import com.example.foodcourtmicroservice.configuration.Constants;
 import com.example.foodcourtmicroservice.domain.api.IPlateServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
-import com.example.foodcourtmicroservice.domain.model.Category;
-import com.example.foodcourtmicroservice.domain.model.CategoryStrategy.Categories.CategoryStrategyFactory;
-import com.example.foodcourtmicroservice.domain.model.CategoryStrategy.ICategoryStrategy;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
-import org.springframework.util.StringUtils;
 
 import java.util.Optional;
 
@@ -24,14 +20,12 @@ public class PlateUseCase implements IPlateServicePort {
     }
 
     @Override
-    public void savePlate(Plate plate, Long idRestaurant) {
-        Long categoryID = plate.getId_category().getId();
-        CategoryStrategyFactory strategyFactory = new CategoryStrategyFactory();
-        ICategoryStrategy categoryStrategy = strategyFactory.createStrategy(categoryID);
-        categoryStrategy.assignCategoryDetails(plate, plate.getId_category());
+    public void savePlate(Plate plate, Long idRestaurant, String categoryPlate) {
+        Long idCategory = categoryPersistencePort.getCategoryByName(categoryPlate);
+        plate.setIdCategory(idCategory);
         plate.setIdRestaurant(idRestaurant);
         platePersistencePort.savePlate(plate);
-        saveCategory(categoryStrategy);
+
     }
 
     @Override
@@ -47,11 +41,4 @@ public class PlateUseCase implements IPlateServicePort {
         }
     }
 
-    private void saveCategory(ICategoryStrategy categoryStrategy){
-        Long categoryId = categoryStrategy.getIdCategory();
-        String categoryName = categoryStrategy.getName();
-        String categoryDescription = categoryStrategy.getDescription();
-        Category category = new Category(categoryId,categoryName,categoryDescription);
-        categoryPersistencePort.saveCategory(category);
-    }
 }

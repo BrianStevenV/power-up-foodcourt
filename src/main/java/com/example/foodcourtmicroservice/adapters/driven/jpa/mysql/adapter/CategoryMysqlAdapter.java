@@ -7,6 +7,8 @@ import com.example.foodcourtmicroservice.domain.model.Category;
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Optional;
+
 @RequiredArgsConstructor
 public class CategoryMysqlAdapter implements ICategoryPersistencePort {
     private final ICategoryRepository categoryRepository;
@@ -16,6 +18,12 @@ public class CategoryMysqlAdapter implements ICategoryPersistencePort {
     public void saveCategory(Category category) {
         CategoryPlateEntity categoryPlateEntity = categoryEntityMapper.toCategory(category);
         categoryRepository.save(categoryPlateEntity);
+    }
+
+    @Override
+    public Long getCategoryByName(String name) {
+        Optional<CategoryPlateEntity> categoryEntity = categoryRepository.findByName(name);
+        return categoryEntity.map(CategoryPlateEntity::getId).orElseThrow();
     }
 
     // anadir puerto
