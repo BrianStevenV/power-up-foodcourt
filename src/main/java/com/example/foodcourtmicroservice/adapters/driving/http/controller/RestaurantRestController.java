@@ -76,6 +76,19 @@ public class RestaurantRestController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_PLATE_OK));
     }
+
+    @Operation(summary = "Status Updated Plate",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Status updated",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Plate already exists",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
+    @PutMapping("plate/status/{enabled}")
+    public ResponseEntity<Map<String, String>> updateStatusPlate(@PathVariable Long id, @PathVariable Boolean enabled){
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_STATUS_PLATE));
+    }
     //TODO: Put exception error input DTO.
 
     //TODO: To apply @Valid in the @RequestBody of endpoint's.

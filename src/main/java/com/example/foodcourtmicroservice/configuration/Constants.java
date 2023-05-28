@@ -18,6 +18,7 @@ public class Constants {
     public static final String DATA_DUPLICATE_RESTAURANT_DTO = "The name or NIT registered is already exist in the database.";
 
     public static final String UPDATE_PLATE_OK = "Updated information.";
+    public static final String UPDATE_STATUS_PLATE = "Status updated plate.";
     public static final String CATEGORY_EXCEPTION = "The Category is not exist in our system.";
     public static final String RESPONSE_ERROR_MESSAGE_KEY = "error";
     public static final String ID_UPDATE_NOT_FOUND = "Id Plate not is found.";
