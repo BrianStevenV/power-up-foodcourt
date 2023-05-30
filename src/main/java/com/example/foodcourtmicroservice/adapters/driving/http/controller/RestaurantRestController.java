@@ -4,6 +4,7 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Plate
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateStatusUpdateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.UpdatePlateRequestDto;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RestaurantPaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IPlateHandler;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IRestaurantHandler;
 import com.example.foodcourtmicroservice.configuration.Constants;
@@ -14,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,9 +25,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -90,6 +94,18 @@ public class RestaurantRestController {
         plateHandler.statusEnabledPlate(enabled, plateStatus);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_STATUS_PLATE));
+    }
+
+    @Operation(summary = "Restaurant Pagination",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Pagination successful",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Error n@",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @PreAuthorize("hasAuthority('CLIENT_ROLE')")
+    @GetMapping("pagination")
+    public Page<RestaurantPaginationResponseDto> getPaginationRestaurant(@RequestParam Integer pageSize, @RequestParam String sortBy){
+        return restaurantHandler.getPaginationRestaurants(pageSize, sortBy);
     }
     //TODO: Put exception error input DTO.
 

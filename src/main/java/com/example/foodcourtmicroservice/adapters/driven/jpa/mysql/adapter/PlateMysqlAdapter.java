@@ -44,6 +44,8 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
             plateRepository.save(plateEntity);
         } else {
             System.out.println("ENTRE AL ELSE.");
+            //TODO: COLOCAR EXEPCION EN STANUSENABLEDPLATE
+
         }
     }
 }

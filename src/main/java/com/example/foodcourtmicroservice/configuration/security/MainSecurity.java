@@ -41,7 +41,7 @@ public class MainSecurity {
                         .requestMatchers(HttpMethod.POST,"/foodCourt/restaurant/").hasAuthority("ADMINISTRATOR_ROLE")
                         .requestMatchers(HttpMethod.POST,"/foodCourt/plate/**").hasAuthority("PROVIDER_ROLE")
                         .requestMatchers(HttpMethod.PUT,"/foodCourt/plate/**").hasAuthority("PROVIDER_ROLE")
-
+                        .requestMatchers(HttpMethod.GET, "/foodCourt/pagination").hasAuthority("CLIENT_ROLE")
                         .anyRequest().authenticated()
                 )
                 .formLogin().disable()

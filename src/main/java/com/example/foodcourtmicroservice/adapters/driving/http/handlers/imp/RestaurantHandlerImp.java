@@ -1,12 +1,14 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.handlers.imp;
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RestaurantPaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IRestaurantHandler;
 
 import com.example.foodcourtmicroservice.domain.api.IRestaurantExternalServicePort;
 
 import com.example.foodcourtmicroservice.domain.api.IRestaurantServicePort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -23,5 +25,10 @@ public class RestaurantHandlerImp implements IRestaurantHandler {
     @Override
     public Long getByNameRestaurant(String nameRestaurant) {
         return restaurantServicePort.getByNameRestaurant(nameRestaurant);
+    }
+
+    @Override
+    public Page<RestaurantPaginationResponseDto> getPaginationRestaurants(Integer pageSize, String filter) {
+        return restaurantServicePort.getPaginationRestaurants(pageSize, filter);
     }
 }
