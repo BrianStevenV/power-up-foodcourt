@@ -5,4 +5,5 @@ import com.example.foodcourtmicroservice.domain.model.Plate;
 public interface IPlateServicePort {
     void savePlate(Plate plate, Long idRestaurant, String categoryPlate);
     void updatePlate(Plate plate);
+    void statusEnabledPlate(Boolean enabled, Plate plate);
 }

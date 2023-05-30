@@ -9,4 +9,6 @@ public interface IPlatePersistencePort {
     void savePlate(Plate plate);
     void updatePlate(PlateEntity plate);
     Optional<PlateEntity> findById(Long id);
+
+    void statusEnabledPlate(Boolean enabled, Plate plate);
 }

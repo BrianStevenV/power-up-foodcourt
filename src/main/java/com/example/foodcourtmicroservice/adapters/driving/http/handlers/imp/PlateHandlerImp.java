@@ -1,6 +1,7 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.handlers.imp;
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateRequestDto;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateStatusUpdateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.UpdatePlateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IPlateHandler;
 import com.example.foodcourtmicroservice.adapters.driving.http.mappers.IPlateRequestMapper;
@@ -22,5 +23,12 @@ public class PlateHandlerImp implements IPlateHandler {
     @Override
     public void updatePlate(UpdatePlateRequestDto updatePlateRequestDto) {
         plateServicePort.updatePlate(plateRequestMapper.toUpdatePlate(updatePlateRequestDto));
+    }
+
+    @Override
+    public void statusEnabledPlate(Boolean enabled, PlateStatusUpdateRequestDto plateStatus) {
+        System.out.println("    HANDLER IMPLEMENT   " + plateStatus.getIdRestaurant());
+        System.out.println("    HANDLER IMPLEMENT " +  plateStatus.getName());
+        plateServicePort.statusEnabledPlate(enabled, plateRequestMapper.toStatusUpdatePlate(plateStatus));
     }
 }

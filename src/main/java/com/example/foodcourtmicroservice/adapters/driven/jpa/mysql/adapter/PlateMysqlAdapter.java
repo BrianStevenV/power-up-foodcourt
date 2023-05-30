@@ -33,4 +33,17 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
             return Optional.empty();
         }
     }
+
+    @Override
+    public void statusEnabledPlate(Boolean enabled, Plate plate) {
+        PlateEntity plateEntity = plateRepository.findByIdRestaurantAndName(plate.getIdRestaurant(), plate.getName());
+        System.out.println(plate.getIdRestaurant());
+        System.out.println(plate.getName());
+        if (plateEntity != null) {
+            plateEntity.setEnabled(enabled);
+            plateRepository.save(plateEntity);
+        } else {
+            System.out.println("ENTRE AL ELSE.");
+        }
+    }
 }

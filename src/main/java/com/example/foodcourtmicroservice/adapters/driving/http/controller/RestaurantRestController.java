@@ -1,6 +1,7 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.controller;
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateRequestDto;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateStatusUpdateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.UpdatePlateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IPlateHandler;
@@ -85,7 +86,8 @@ public class RestaurantRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
     @PutMapping("plate/status/{enabled}")
-    public ResponseEntity<Map<String, String>> updateStatusPlate(@PathVariable Long id, @PathVariable Boolean enabled){
+    public ResponseEntity<Map<String, String>> updateStatusPlate(@PathVariable Boolean enabled, @RequestBody PlateStatusUpdateRequestDto plateStatus){
+        plateHandler.statusEnabledPlate(enabled, plateStatus);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_STATUS_PLATE));
     }
