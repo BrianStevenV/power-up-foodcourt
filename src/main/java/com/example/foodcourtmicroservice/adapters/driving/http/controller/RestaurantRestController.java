@@ -4,6 +4,7 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Plate
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateStatusUpdateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.UpdatePlateRequestDto;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RestaurantPaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IPlateHandler;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IRestaurantHandler;
@@ -103,9 +104,26 @@ public class RestaurantRestController {
                     @ApiResponse(responseCode = "409", description = "Error n@",
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('CLIENT_ROLE')")
-    @GetMapping("pagination")
+    @GetMapping("pagination/restaurant")
     public Page<RestaurantPaginationResponseDto> getPaginationRestaurant(@RequestParam Integer pageSize, @RequestParam String sortBy){
         return restaurantHandler.getPaginationRestaurants(pageSize, sortBy);
+    }
+    @Operation(summary = "Plate Pagination",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Pagination successful",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Error n@",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @PreAuthorize("hasAuthority('CLIENT_ROLE')")
+    @GetMapping("pagination/plate")
+    public Page<PlatePaginationResponseDto> getPaginationPlate(@RequestParam String nameRestaurant, @RequestParam Integer pageSize,
+                                                               @RequestParam String sortBy, @RequestParam(required = false) String nameCategory){
+        Long idRestaurant = restaurantHandler.getByNameRestaurant(nameRestaurant);
+        Long idCategory = null;
+        if (nameCategory != null) {
+            idCategory = plateHandler.getByNameCategory(nameCategory);
+        }
+        return plateHandler.getPaginationPlates(idRestaurant, pageSize, sortBy, idCategory);
     }
     //TODO: Put exception error input DTO.
 

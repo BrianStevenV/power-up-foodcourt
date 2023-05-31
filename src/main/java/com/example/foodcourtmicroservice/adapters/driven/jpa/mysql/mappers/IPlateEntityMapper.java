@@ -1,6 +1,7 @@
 package com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -10,4 +11,5 @@ import org.mapstruct.ReportingPolicy;
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IPlateEntityMapper {
     PlateEntity toPlate(Plate plate);
+    PlatePaginationResponseDto toPlatePaginationResponseDto(PlateEntity plateEntity);
 }

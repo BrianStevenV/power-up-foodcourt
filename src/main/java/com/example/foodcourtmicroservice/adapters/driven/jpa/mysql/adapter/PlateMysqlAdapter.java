@@ -3,9 +3,14 @@ package com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IPlateEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.IPlateRepository;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
 
@@ -37,8 +42,6 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         PlateEntity plateEntity = plateRepository.findByIdRestaurantAndName(plate.getIdRestaurant(), plate.getName());
-        System.out.println(plate.getIdRestaurant());
-        System.out.println(plate.getName());
         if (plateEntity != null) {
             plateEntity.setEnabled(enabled);
             plateRepository.save(plateEntity);
@@ -48,4 +51,17 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
 
         }
     }
+
+    @Override
+    public Page<PlatePaginationResponseDto> getPaginationPlates(Long idRestaurant, Integer pageSize, String sortBy, Long idCategory) {
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by(sortBy).ascending());
+        Page<PlateEntity> platePage;
+        if (idCategory != null) {
+            platePage = plateRepository.findByRestaurantIdAndCategoryId(idRestaurant, idCategory, pageable);
+        } else {
+            platePage = plateRepository.findByRestaurantId(idRestaurant, pageable);
+        }
+        return platePage.map(plateEntityMapper::toPlatePaginationResponseDto);
+    }
+
 }

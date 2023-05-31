@@ -1,12 +1,14 @@
 package com.example.foodcourtmicroservice.domain.usecase;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.configuration.Constants;
 import com.example.foodcourtmicroservice.domain.api.IPlateServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
+import org.springframework.data.domain.Page;
 
 import java.util.Optional;
 
@@ -45,6 +47,16 @@ public class PlateUseCase implements IPlateServicePort {
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         platePersistencePort.statusEnabledPlate(enabled, plate);
+    }
+
+    @Override
+    public Long getByNameCategory(String nameCategory) {
+        return categoryPersistencePort.getCategoryByName(nameCategory);
+    }
+
+    @Override
+    public Page<PlatePaginationResponseDto> getPaginationPlates(Long idRestaurant, Integer pageSize, String sortBy, Long idCategory) {
+        return platePersistencePort.getPaginationPlates(idRestaurant, pageSize, sortBy, idCategory);
     }
 
 }
