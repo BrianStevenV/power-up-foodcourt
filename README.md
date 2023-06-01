@@ -82,3 +82,5 @@ Ejemplo de la petición:
 
 - Debe de rellenar los parametros para poder llevar a cabo la operacion
 - Obtendra los platos de la plazoleta filtrados, tendra dos opciones, puede filtrar los platos por restaurante y puede tener en cuenta la categoria del mismo
+
+El proyecto aun esta en construccion y aun se esta puliendo algunos detalles, por lo que pido paciencia en historias de usuario, muchas gracias por la comprension!
