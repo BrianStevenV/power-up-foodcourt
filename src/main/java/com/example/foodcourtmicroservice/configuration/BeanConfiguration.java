@@ -8,7 +8,6 @@ import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUse
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.PlateMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantFeignClient;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.FeignRestaurantMysqlAdapter;
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.ICategoryEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IPlateEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.ICategoryRepository;
@@ -42,7 +41,6 @@ public class BeanConfiguration {
 
     //Category
     private final ICategoryRepository categoryRepository;
-    private final ICategoryEntityMapper categoryEntityMapper;
 
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
@@ -56,7 +54,7 @@ public class BeanConfiguration {
 
     @Bean
     public ICategoryPersistencePort categoryPersistencePort() {
-        return new CategoryMysqlAdapter(categoryRepository, categoryEntityMapper);
+        return new CategoryMysqlAdapter(categoryRepository);
     }
 
     //No falta service port?

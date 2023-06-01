@@ -10,7 +10,6 @@ import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
 import org.springframework.data.domain.Page;
 
-import java.util.Optional;
 
 public class PlateUseCase implements IPlateServicePort {
     private final IPlatePersistencePort platePersistencePort;
@@ -32,12 +31,10 @@ public class PlateUseCase implements IPlateServicePort {
 
     @Override
     public void updatePlate(Plate plate) {
-        Optional<PlateEntity> optionalPlateEntity = platePersistencePort.findById(plate.getId());
-        if (optionalPlateEntity.isPresent()) {
-            PlateEntity existPlateEntity = optionalPlateEntity.get();
-            existPlateEntity.setPrice(plate.getPrice());
-            existPlateEntity.setDescription(plate.getDescription());
-            platePersistencePort.updatePlate(existPlateEntity);
+        if (platePersistencePort.findById(plate.getId()).isPresent()) {
+            plate.setPrice(plate.getPrice());
+            plate.setDescription(plate.getDescription());
+            platePersistencePort.savePlate(plate);
         } else {
             throw new IdPlateNotFoundException(Constants.ID_UPDATE_NOT_FOUND);
         }

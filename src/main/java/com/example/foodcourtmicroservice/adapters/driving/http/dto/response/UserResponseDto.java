@@ -1,11 +1,11 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 
 import java.time.LocalDate;
 @AllArgsConstructor
-@Getter
+@Data
 public class UserResponseDto {
     private String dniNumber;
     private String name;

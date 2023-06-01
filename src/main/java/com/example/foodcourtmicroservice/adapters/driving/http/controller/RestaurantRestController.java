@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -39,7 +38,6 @@ import java.util.Map;
 @SecurityRequirement(name = "jwt")
 public class RestaurantRestController {
     private final IRestaurantHandler restaurantHandler;
-
     private final IPlateHandler plateHandler;
     @Operation(summary = "Add a new Restaurant",
             responses = {

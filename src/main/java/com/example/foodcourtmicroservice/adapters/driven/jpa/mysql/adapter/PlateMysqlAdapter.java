@@ -25,20 +25,11 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
     }
 
     @Override
-    public void updatePlate(PlateEntity plate) {
-        plateRepository.save(plate);
-    }
-
-    @Override
     public Optional<PlateEntity> findById(Long id) {
         Optional<PlateEntity> plateEntity = plateRepository.findById(id);
-        if (plateEntity.isPresent()) {
-            return Optional.of(plateEntity.get());
-        } else {
-            return Optional.empty();
-        }
+        return plateEntity;
     }
-
+    
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         PlateEntity plateEntity = plateRepository.findByIdRestaurantAndName(plate.getIdRestaurant(), plate.getName());
