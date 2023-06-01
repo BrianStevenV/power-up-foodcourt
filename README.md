@@ -84,3 +84,6 @@ Ejemplo de la petición:
 - Obtendra los platos de la plazoleta filtrados, tendra dos opciones, puede filtrar los platos por restaurante y puede tener en cuenta la categoria del mismo
 
 El proyecto aun esta en construccion y aun se esta puliendo algunos detalles, por lo que pido paciencia en historias de usuario, muchas gracias por la comprension!
+
+Por motivos de retraso no pude hacer una rama para cada historia, pero a partir de las historias 11 en adelante las tendran, de esta manera busco aplicar el concepto y el requerimiento ya que no me fue posible
+desde el principio aplicarlo y al verme atrasado decidi hacer el speed up de esta manera, tambien no tenia el conocimiento de que se debia de hacer asi, pero ya que me percate lo tendre en cuenta.
