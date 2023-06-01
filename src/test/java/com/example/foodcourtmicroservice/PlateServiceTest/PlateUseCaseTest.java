@@ -70,14 +70,10 @@ public class PlateUseCaseTest {
         Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", true,3L, 14L);
         Long idRestaurant = 14L;
         String categoryPlate = "Category Test";
-
-
         Long expectedCategoryId = 3L;
         when(categoryPersistencePort.getCategoryByName(categoryPlate)).thenReturn(expectedCategoryId);
         doNothing().when(platePersistencePort).savePlate(plate);
-
         plateUseCase.savePlate(plate, idRestaurant, categoryPlate);
-
         verify(categoryPersistencePort).getCategoryByName(categoryPlate);
         verify(platePersistencePort).savePlate(plate);
     }
@@ -119,22 +115,14 @@ public class PlateUseCaseTest {
 
     @Test
     public void updateStatusPlateSucesfullTest() {
-        // Arrange
         Boolean enabled = true;
         Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", true, 3L, 14L);
         Plate updatedPlate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", enabled, 3L, 14L);
-
         when(platePersistencePort.statusEnabledPlate(any(Plate.class))).thenReturn(plate);
-
         ArgumentCaptor<Plate> plateCaptor = ArgumentCaptor.forClass(Plate.class);
-
-        // Act
         plateUseCase.statusEnabledPlate(enabled, plate);
-
-        // Verify
         verify(platePersistencePort).statusEnabledPlate(any(Plate.class));
         verify(platePersistencePort).savePlate(plateCaptor.capture());
-
         Plate capturedPlate = plateCaptor.getValue();
         assertNotEquals(updatedPlate, capturedPlate);
     }
@@ -150,13 +138,6 @@ public class PlateUseCaseTest {
         });
         verify(platePersistencePort).statusEnabledPlate(any(Plate.class));
     }
-
-
-
-
-
-
-
 
 
 

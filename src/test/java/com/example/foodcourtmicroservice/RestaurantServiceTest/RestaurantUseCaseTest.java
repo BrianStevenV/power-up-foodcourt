@@ -41,12 +41,9 @@ public class RestaurantUseCaseTest {
     @Test
     @DisplayName("Test: getByNameRestaurant - Failure (RestaurantEntityNotFoundException)")
     public void getByNameRestaurantFailureTest() {
-        // Arrange
         String name = "Jefferson";
         when(restaurantPersistencePort.getByNameRestaurant(name))
                 .thenThrow(RestaurantEntityNotFoundException.class);
-
-        // Act and Assert
         assertThrows(RestaurantEntityNotFoundException.class,
                 () -> restaurantUseCase.getByNameRestaurant(name));
         verify(restaurantPersistencePort).getByNameRestaurant(name);
@@ -56,7 +53,6 @@ public class RestaurantUseCaseTest {
     public void getPaginationRestaurantsSucessfullTest(){
         Integer sizePage = 5;
         String filter = "name";
-
         restaurantUseCase.getPaginationRestaurants(sizePage, filter);
         verify(restaurantPersistencePort).getPaginationRestaurants(sizePage, filter);
     }

@@ -61,7 +61,6 @@ public class RestaurantFeignUseCaseTest {
         when(restaurantFeignClient.getUserByDni(anyString()))
                 .thenThrow(NoProviderException.class);
         String dniNumber = "456";
-
         assertThrows(NoProviderException.class,
                 () -> restaurantFeignClient.getUserByDni(dniNumber));
 
@@ -79,8 +78,6 @@ public class RestaurantFeignUseCaseTest {
         RestaurantRequestDto restaurantRequestDto = new RestaurantRequestDto("Prueba","Java Street","3192621110",
                 "Image","34512","4");
         feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequestDto);
-
-        // Verificar que el método correspondiente en el puerto de persistencia externo haya sido llamado
         verify(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequestDto);
 
     }
