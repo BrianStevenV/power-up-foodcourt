@@ -5,13 +5,12 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Resta
 import com.example.foodcourtmicroservice.domain.api.IRestaurantExternalServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.NoProviderException;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantExternalPersistencePort;
-import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class FeignClientRestaurantUseCase implements IRestaurantExternalServicePort {
-    @Autowired
+
     private RestaurantFeignClient restaurantFeignClient;
-    @Autowired
+
     private IRestaurantExternalPersistencePort restaurantExternalPersistencePort;
 
     public FeignClientRestaurantUseCase(RestaurantFeignClient restaurantFeignClient, IRestaurantExternalPersistencePort restaurantExternalPersistencePort){
