@@ -11,7 +11,8 @@ public interface IPlatePersistencePort {
     void savePlate(Plate plate);
     Optional<PlateEntity> findById(Long id);
 
-    void statusEnabledPlate(Boolean enabled, Plate plate);
+    Plate statusEnabledPlate(Plate plate);
 
     Page<PlatePaginationResponseDto> getPaginationPlates(Long idRestaurant, Integer pageSize, String sortBy, Long idCategory);
+    Page<PlatePaginationResponseDto> getPaginationPlatesWithoutCategory(Long idRestaurant, Integer pageSize, String sortBy);
 }

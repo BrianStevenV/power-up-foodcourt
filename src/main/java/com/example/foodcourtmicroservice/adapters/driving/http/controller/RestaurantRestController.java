@@ -89,7 +89,7 @@ public class RestaurantRestController {
                             content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
     @PreAuthorize("hasAuthority('PROVIDER_ROLE')")
     @PutMapping("plate/status/{enabled}")
-    public ResponseEntity<Map<String, String>> updateStatusPlate(@PathVariable Boolean enabled, @RequestBody PlateStatusUpdateRequestDto plateStatus){
+    public ResponseEntity<Map<String, String>> updateStatusPlate(@PathVariable Boolean enabled, @Valid @RequestBody PlateStatusUpdateRequestDto plateStatus){
         plateHandler.statusEnabledPlate(enabled, plateStatus);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.UPDATE_STATUS_PLATE));

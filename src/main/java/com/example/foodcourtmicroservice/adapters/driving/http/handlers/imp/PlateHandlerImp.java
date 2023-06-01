@@ -29,8 +29,6 @@ public class PlateHandlerImp implements IPlateHandler {
 
     @Override
     public void statusEnabledPlate(Boolean enabled, PlateStatusUpdateRequestDto plateStatus) {
-        System.out.println("    HANDLER IMPLEMENT   " + plateStatus.getIdRestaurant());
-        System.out.println("    HANDLER IMPLEMENT " +  plateStatus.getName());
         plateServicePort.statusEnabledPlate(enabled, plateRequestMapper.toStatusUpdatePlate(plateStatus));
     }
 

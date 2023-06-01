@@ -20,7 +20,7 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
     private final IPlateEntityMapper plateEntityMapper;
     @Override
     public void savePlate(Plate plate) {
-        PlateEntity plateEntity = plateEntityMapper.toPlate(plate);
+        PlateEntity plateEntity = plateEntityMapper.toPlateEntity(plate);
         plateRepository.save(plateEntity);
     }
 
@@ -29,30 +29,37 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
         Optional<PlateEntity> plateEntity = plateRepository.findById(id);
         return plateEntity;
     }
-    
-    @Override
-    public void statusEnabledPlate(Boolean enabled, Plate plate) {
-        PlateEntity plateEntity = plateRepository.findByIdRestaurantAndName(plate.getIdRestaurant(), plate.getName());
-        if (plateEntity != null) {
-            plateEntity.setEnabled(enabled);
-            plateRepository.save(plateEntity);
-        } else {
-            System.out.println("ENTRE AL ELSE.");
-            //TODO: COLOCAR EXEPCION EN STANUSENABLEDPLATE
 
-        }
+    @Override
+    public Plate statusEnabledPlate(Plate plate) {
+        PlateEntity plateEntity = plateRepository.findByIdRestaurantAndName(plate.getIdRestaurant(), plate.getName());
+        return plateEntityMapper.toPlate(plateEntity);
     }
 
     @Override
     public Page<PlatePaginationResponseDto> getPaginationPlates(Long idRestaurant, Integer pageSize, String sortBy, Long idCategory) {
         Pageable pageable = PageRequest.of(0, pageSize, Sort.by(sortBy).ascending());
         Page<PlateEntity> platePage;
-        if (idCategory != null) {
-            platePage = plateRepository.findByRestaurantIdAndCategoryId(idRestaurant, idCategory, pageable);
-        } else {
-            platePage = plateRepository.findByRestaurantId(idRestaurant, pageable);
-        }
+        platePage = plateRepository.findByRestaurantIdAndCategoryId(idRestaurant, idCategory, pageable);
         return platePage.map(plateEntityMapper::toPlatePaginationResponseDto);
     }
+
+    @Override
+    public Page<PlatePaginationResponseDto> getPaginationPlatesWithoutCategory(Long idRestaurant, Integer pageSize, String sortBy) {
+        Pageable pageable = PageRequest.of(0, pageSize, Sort.by(sortBy).ascending());
+        Page<PlateEntity> platePage;
+        platePage = plateRepository.findByRestaurantId(idRestaurant, pageable);
+        return platePage.map(plateEntityMapper::toPlatePaginationResponseDto);
+    }
+
+    //TODO: MENTOR@ DE PRAGMA
+
+    //TODO:Aquí entra una cuestión bastante interesante. He estado dialogando con algunos mentores de Pragma y se ha comunicado que en el proyecto:
+
+    //TODO:Un factor muy importante es la aplicación correcta de la arquitectura de puertos y adaptadores. He estado manejando lógica de filtrado
+    //TODO:en esta capa adapter. Sin embargo, cuando lo presenté a los mentores, ellos recomendaron que sigamos de manera estricta la arquitectura,
+    //TODO:de manera que, por recomendación, migre toda la lógica de filtrado a la capa de dominio. Es por esa razón que aquí se presenta una duplicación de código
+    //TODO:infringiendo así el principio DRY (Don't Repeat Yourself). Me gustaría conocer si es correcto o no para la normativa del proyecto este enfoque,
+    //TODO:ya que rompe un principio de diseño. Muchas gracias. Estaré atento a su respuesta.
 
 }

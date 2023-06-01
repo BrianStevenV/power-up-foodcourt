@@ -10,6 +10,7 @@ import org.mapstruct.ReportingPolicy;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         unmappedSourcePolicy = ReportingPolicy.IGNORE)
 public interface IPlateEntityMapper {
-    PlateEntity toPlate(Plate plate);
+    PlateEntity toPlateEntity(Plate plate);
+    Plate toPlate(PlateEntity plateEntity);
     PlatePaginationResponseDto toPlatePaginationResponseDto(PlateEntity plateEntity);
 }

@@ -3,10 +3,10 @@ package com.example.foodcourtmicroservice.configuration;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.CategoryNotFoundException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.DataDuplicateViolationException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.PaginationException;
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.PlateEntityNotFoundException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.RestaurantEntityNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.NoProviderException;
+import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -53,9 +53,15 @@ public class ControllerAdvisor {
                 .body(Collections.singletonMap(Constants.RESPONSE_ERROR_MESSAGE_KEY, Constants.CATEGORY_EXCEPTION));
     }
 
-    @ExceptionHandler(PlateEntityNotFoundException.class)
-    public ResponseEntity<Map<String, String>> handlePlateEntityNotFoundException(PlateEntityNotFoundException plateEntityNotFoundException){
+//    @ExceptionHandler(PlateEntityNotFoundException.class)
+//    public ResponseEntity<Map<String, String>> handlePlateEntityNotFoundException(PlateEntityNotFoundException plateEntityNotFoundException){
+//        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+//                .body(Collections.singletonMap(Constants.RESPONSE_ERROR_MESSAGE_KEY, Constants.PLATE_ENTITY_NOT_FOUND));
+//    }
+
+    @ExceptionHandler(PlateNotFoundException.class)
+    public ResponseEntity<Map<String, String>> handlePlateNotFoundException(PlateNotFoundException plateNotFoundException){
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Collections.singletonMap(Constants.RESPONSE_ERROR_MESSAGE_KEY, Constants.PLATE_ENTITY_NOT_FOUND));
+                .body(Collections.singletonMap(Constants.RESPONSE_ERROR_MESSAGE_KEY, Constants.PLATE_NOT_FOUND));
     }
 }

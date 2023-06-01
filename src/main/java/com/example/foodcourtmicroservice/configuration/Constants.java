@@ -20,7 +20,7 @@ public class Constants {
     public static final String RESTAURANT_ENTITY_NOT_FOUND = "The restaurant was not found.";
     public static final String PAGINATION_ERROR = "Error to paginate.";
 
-    public static final String PLATE_ENTITY_NOT_FOUND = "Plate not found.";
+    public static final String PLATE_NOT_FOUND = "Plate not found.";
 
     public static final String UPDATE_PLATE_OK = "Updated information.";
     public static final String UPDATE_STATUS_PLATE = "Status updated plate.";

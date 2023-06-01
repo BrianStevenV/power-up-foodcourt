@@ -3,12 +3,14 @@ package com.example.foodcourtmicroservice.PlateServiceTest;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.CategoryNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
+import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.PlateUseCase;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -64,7 +67,7 @@ public class PlateUseCaseTest {
 
     @Test
     public void savePlateSuccessfulTest(){
-        Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", 3L, 14L);
+        Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", true,3L, 14L);
         Long idRestaurant = 14L;
         String categoryPlate = "Category Test";
 
@@ -113,6 +116,48 @@ public class PlateUseCaseTest {
         verify(platePersistencePort).findById(id);
         verify(platePersistencePort, never()).savePlate(any(Plate.class));
     }
+
+    @Test
+    public void updateStatusPlateSucesfullTest() {
+        // Arrange
+        Boolean enabled = true;
+        Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", true, 3L, 14L);
+        Plate updatedPlate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", enabled, 3L, 14L);
+
+        when(platePersistencePort.statusEnabledPlate(any(Plate.class))).thenReturn(plate);
+
+        ArgumentCaptor<Plate> plateCaptor = ArgumentCaptor.forClass(Plate.class);
+
+        // Act
+        plateUseCase.statusEnabledPlate(enabled, plate);
+
+        // Verify
+        verify(platePersistencePort).statusEnabledPlate(any(Plate.class));
+        verify(platePersistencePort).savePlate(plateCaptor.capture());
+
+        Plate capturedPlate = plateCaptor.getValue();
+        assertNotEquals(updatedPlate, capturedPlate);
+    }
+
+
+    @Test
+    public void updateStatusPlateThrowsPlateNotFoundExceptionTest() {
+        Boolean enabled = true;
+        Plate plate = new Plate(123L, "Prueba", "Food Test", 50.0, "Image.http", true,3L, 14L);
+        when(platePersistencePort.statusEnabledPlate(any(Plate.class))).thenReturn(null);
+        assertThrows(PlateNotFoundException.class, () -> {
+            plateUseCase.statusEnabledPlate(enabled,plate);
+        });
+        verify(platePersistencePort).statusEnabledPlate(any(Plate.class));
+    }
+
+
+
+
+
+
+
+
 
 
 }

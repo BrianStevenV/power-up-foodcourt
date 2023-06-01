@@ -6,19 +6,22 @@ public class Plate {
     private String description;
     private Double price;
     private String urlImage;
-//    private Category id_category;
+
+    private Boolean enabled = true;
     private Long idCategory;
     private Long idRestaurant;
 
-    public Plate(Long id, String name, String description, Double price, String urlImage, Long idCategory, Long idRestaurant) {
+    public Plate(Long id, String name, String description, Double price, String urlImage, Boolean enabled, Long idCategory, Long idRestaurant) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
         this.urlImage = urlImage;
+        this.enabled = enabled;
         this.idCategory = idCategory;
         this.idRestaurant = idRestaurant;
     }
+
     public Plate(){}
 
     public Long getId() {
@@ -59,6 +62,14 @@ public class Plate {
 
     public void setUrlImage(String urlImage) {
         this.urlImage = urlImage;
+    }
+
+    public Boolean getEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        this.enabled = enabled;
     }
 
     public Long getIdCategory() {

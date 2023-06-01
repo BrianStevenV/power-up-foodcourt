@@ -1,10 +1,11 @@
 package com.example.foodcourtmicroservice.domain.usecase;
 
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
+
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.configuration.Constants;
 import com.example.foodcourtmicroservice.domain.api.IPlateServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
+import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.model.Plate;
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
@@ -43,9 +44,15 @@ public class PlateUseCase implements IPlateServicePort {
     //TODO: sino funciona, crear el persistence de update status
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
-        platePersistencePort.statusEnabledPlate(enabled, plate);
-    }
+        Plate updatedPlate = platePersistencePort.statusEnabledPlate(plate);
+        if (updatedPlate != null) {
+            updatedPlate.setEnabled(enabled);
+            platePersistencePort.savePlate(updatedPlate);
+        } else {
+            throw new PlateNotFoundException();
+        }
 
+    }
     @Override
     public Long getByNameCategory(String nameCategory) {
         return categoryPersistencePort.getCategoryByName(nameCategory);
@@ -53,7 +60,11 @@ public class PlateUseCase implements IPlateServicePort {
 
     @Override
     public Page<PlatePaginationResponseDto> getPaginationPlates(Long idRestaurant, Integer pageSize, String sortBy, Long idCategory) {
-        return platePersistencePort.getPaginationPlates(idRestaurant, pageSize, sortBy, idCategory);
+            if(idCategory == null){
+                return platePersistencePort.getPaginationPlatesWithoutCategory(idRestaurant,pageSize,sortBy);
+            }   else{
+                return platePersistencePort.getPaginationPlates(idRestaurant,pageSize,sortBy,idCategory);
+            }
     }
 
 }
