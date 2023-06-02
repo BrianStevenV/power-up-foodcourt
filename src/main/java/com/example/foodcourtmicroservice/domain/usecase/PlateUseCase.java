@@ -3,6 +3,7 @@ package com.example.foodcourtmicroservice.domain.usecase;
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
 import com.example.foodcourtmicroservice.configuration.Constants;
+import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
 import com.example.foodcourtmicroservice.domain.api.IPlateServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
@@ -15,10 +16,13 @@ import org.springframework.data.domain.Page;
 public class PlateUseCase implements IPlateServicePort {
     private final IPlatePersistencePort platePersistencePort;
     private final ICategoryPersistencePort categoryPersistencePort;
+    private final IAuthenticationUserInfoServicePort authenticationUserInfoServicePort;
 
-    public PlateUseCase(IPlatePersistencePort platePersistencePort,ICategoryPersistencePort categoryPersistencePort) {
+    public PlateUseCase(IPlatePersistencePort platePersistencePort,ICategoryPersistencePort categoryPersistencePort,
+                        IAuthenticationUserInfoServicePort authenticationUserInfoServicePort) {
         this.platePersistencePort = platePersistencePort;
         this.categoryPersistencePort = categoryPersistencePort;
+        this.authenticationUserInfoServicePort = authenticationUserInfoServicePort;
     }
 
     @Override
@@ -44,6 +48,8 @@ public class PlateUseCase implements IPlateServicePort {
     //TODO: sino funciona, crear el persistence de update status
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
+        String id = authenticationUserInfoServicePort.getIdentifierUserFromToken();
+        System.out.println(id);
         Plate updatedPlate = platePersistencePort.statusEnabledPlate(plate);
         if (updatedPlate != null) {
             updatedPlate.setEnabled(enabled);

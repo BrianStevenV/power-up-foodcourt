@@ -2,6 +2,8 @@ package com.example.foodcourtmicroservice.configuration;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.CategoryMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantMysqlAdapter;
+import com.example.foodcourtmicroservice.configuration.security.JwtAuthenticationFilter;
+import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
 import com.example.foodcourtmicroservice.domain.api.IRestaurantServicePort;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantPersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
@@ -41,7 +43,7 @@ public class BeanConfiguration {
 
     //Category
     private final ICategoryRepository categoryRepository;
-
+    private final IAuthenticationUserInfoServicePort authenticationUserInfoServicePort;
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
         return new RestaurantMysqlAdapter(restaurantRepository, restaurantEntityMapper);
@@ -66,7 +68,7 @@ public class BeanConfiguration {
 
     @Bean
     public IPlateServicePort plateServicePort() {
-        return new PlateUseCase(platePersistencePort(), categoryPersistencePort());
+        return new PlateUseCase(platePersistencePort(), categoryPersistencePort(), authenticationUserInfoServicePort);
     }
 
     @Bean
