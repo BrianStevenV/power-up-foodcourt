@@ -1,7 +1,8 @@
 package com.example.foodcourtmicroservice.domain.api;
 
-import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+
+import com.example.foodcourtmicroservice.domain.model.Restaurant;
 
 public interface IRestaurantExternalServicePort {
-    void saveRestaurantServiceFeign(RestaurantRequestDto restaurantRequestDto);
+    void saveRestaurantServiceFeign(Restaurant restaurantRequestDto);
 }

@@ -1,7 +1,7 @@
 package com.example.foodcourtmicroservice.domain.spi;
 
-import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.example.foodcourtmicroservice.domain.model.Restaurant;
 
 public interface IRestaurantExternalPersistencePort {
-    void saveRestaurantPersistenceFeign(RestaurantRequestDto restaurantRequestDto);
+    void saveRestaurantPersistenceFeign(Restaurant restaurantRequestDto);
 }

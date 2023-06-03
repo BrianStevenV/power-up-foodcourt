@@ -2,6 +2,7 @@ package com.example.foodcourtmicroservice.PlateServiceTest;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.PlateEntity;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.CategoryNotFoundException;
+import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.model.Plate;
@@ -38,11 +39,13 @@ public class PlateUseCaseTest {
     @Mock
     private ICategoryPersistencePort categoryPersistencePort;
 
+    private IAuthenticationUserInfoServicePort authenticationUserInfoServicePort;
+
     private PlateUseCase plateUseCase;
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.openMocks(this);
-        plateUseCase = new PlateUseCase(platePersistencePort, categoryPersistencePort);
+        plateUseCase = new PlateUseCase(platePersistencePort, categoryPersistencePort, authenticationUserInfoServicePort);
     }
 
     @Test

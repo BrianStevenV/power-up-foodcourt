@@ -4,6 +4,7 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Resta
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RestaurantPaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IRestaurantHandler;
 
+import com.example.foodcourtmicroservice.adapters.driving.http.mappers.IRestaurantRequestMapper;
 import com.example.foodcourtmicroservice.domain.api.IRestaurantExternalServicePort;
 
 import com.example.foodcourtmicroservice.domain.api.IRestaurantServicePort;
@@ -17,9 +18,10 @@ public class RestaurantHandlerImp implements IRestaurantHandler {
     private final IRestaurantExternalServicePort restaurantExternalServicePort;
 
     private final IRestaurantServicePort restaurantServicePort;
+    private final IRestaurantRequestMapper restaurantRequestMapper;
     @Override
     public void saveRestaurantFeign(RestaurantRequestDto restaurantRequestDto) {
-        restaurantExternalServicePort.saveRestaurantServiceFeign(restaurantRequestDto);
+        restaurantExternalServicePort.saveRestaurantServiceFeign(restaurantRequestMapper.toRestaurant(restaurantRequestDto));
     }
 
     @Override

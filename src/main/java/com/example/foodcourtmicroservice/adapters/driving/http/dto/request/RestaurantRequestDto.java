@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 public class RestaurantRequestDto {
+
     @Pattern(regexp = "^(?=.*[a-zA-Z])[a-zA-Z0-9]+$")
     @NotBlank
     private String name;
@@ -24,7 +25,7 @@ public class RestaurantRequestDto {
     @Pattern(regexp = "^[0-9]+$")
     @NotBlank
     private String nit;
-    @NotBlank
-    private String idOwner;
+    private Long idOwner;
+    //TODO: I did change String to Long
 
 }

@@ -1,10 +1,10 @@
 package com.example.foodcourtmicroservice.RestaurantFeignServiceTest;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantFeignClient;
-import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RoleResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.UserResponseDto;
 import com.example.foodcourtmicroservice.domain.exceptions.NoProviderException;
+import com.example.foodcourtmicroservice.domain.model.Restaurant;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantExternalPersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
 import org.junit.jupiter.api.BeforeEach;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -40,45 +40,45 @@ public class RestaurantFeignUseCaseTest {
 
     @Test
     public void getUserByDniMethodSuccessfulTest() {
-        UserResponseDto userResponseDto = new UserResponseDto("123", "Prueba", "Prueba apellido",
+        UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
-        when(restaurantFeignClient.getUserByDni(anyString())).thenReturn(userResponseDto);
-        String dniNumber = "123";
-        UserResponseDto result = restaurantFeignClient.getUserByDni(dniNumber);
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+        Long idNumber = 20L;
+        UserResponseDto result = restaurantFeignClient.getUserByDni(idNumber);
         assertNotNull(result);
         assertEquals("123", result.getDniNumber());
         assertEquals("Prueba", result.getName());
         assertEquals("Prueba apellido", result.getSurname());
-        verify(restaurantFeignClient).getUserByDni(dniNumber);
+        verify(restaurantFeignClient).getUserByDni(idNumber);
     }
 
     @Test
     public void getUserByDniMethodFailureTest(){
-        UserResponseDto userResponseDto = new UserResponseDto("123", "Prueba", "Prueba apellido",
+        UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
-        when(restaurantFeignClient.getUserByDni(anyString()))
+        when(restaurantFeignClient.getUserByDni(anyLong()))
                 .thenThrow(NoProviderException.class);
-        String dniNumber = "456";
+        Long idNumber = 20L;
         assertThrows(NoProviderException.class,
-                () -> restaurantFeignClient.getUserByDni(dniNumber));
+                () -> restaurantFeignClient.getUserByDni(idNumber));
 
-        verify(restaurantFeignClient).getUserByDni(dniNumber);
+        verify(restaurantFeignClient).getUserByDni(idNumber);
     }
 
     @Test
     public void saveRestaurantServiceFeignTest(){
-        UserResponseDto userResponseDto = new UserResponseDto("123", "Prueba", "Prueba apellido",
+        UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
-        when(restaurantFeignClient.getUserByDni(anyString())).thenReturn(userResponseDto);
-        String dniNumber = "123";
-        UserResponseDto result = restaurantFeignClient.getUserByDni(dniNumber);
-        RestaurantRequestDto restaurantRequestDto = new RestaurantRequestDto("Prueba","Java Street","3192621110",
-                "Image","34512","4");
-        feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequestDto);
-        verify(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequestDto);
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+        Long idNumber = 20L;
+        UserResponseDto result = restaurantFeignClient.getUserByDni(idNumber);
+        Restaurant restaurantRequest = new Restaurant(20L,"Prueba","Java Street","3192621110",
+                "Image","34512",4L);
+        feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequest);
+        verify(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequest);
 
     }
 

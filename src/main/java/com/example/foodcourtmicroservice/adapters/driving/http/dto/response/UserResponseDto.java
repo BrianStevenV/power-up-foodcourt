@@ -7,6 +7,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Data
 public class UserResponseDto {
+    private Long id;
     private String dniNumber;
     private String name;
     private String surname;
@@ -14,6 +15,7 @@ public class UserResponseDto {
     private String phone;
     private LocalDate birthdate;
     private String password;
-    //Si no funciona, cambiar a Role
     private RoleResponseDto idRole;
+
+    //TODO: ACABO DE AGREGAR EL ID.
 }

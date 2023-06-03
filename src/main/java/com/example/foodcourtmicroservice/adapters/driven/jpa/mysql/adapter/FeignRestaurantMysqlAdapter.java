@@ -4,7 +4,7 @@ import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.Restau
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.DataDuplicateViolationException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.IRestaurantRepository;
-import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
+import com.example.foodcourtmicroservice.domain.model.Restaurant;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantExternalPersistencePort;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,8 +16,8 @@ public class FeignRestaurantMysqlAdapter implements IRestaurantExternalPersisten
 
 
     @Override
-    public void saveRestaurantPersistenceFeign(RestaurantRequestDto restaurantRequestDto) {
-        RestaurantEntity restaurantEntity = restaurantEntityMapper.toRestaurantEntity(restaurantRequestDto);
+    public void saveRestaurantPersistenceFeign(Restaurant restaurantRequestDto) {
+        RestaurantEntity restaurantEntity = restaurantEntityMapper.toEntity(restaurantRequestDto);
         try{
             restaurantRepository.save(restaurantEntity);
         }   catch (DataIntegrityViolationException e){
