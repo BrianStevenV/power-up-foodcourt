@@ -23,9 +23,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class JwtAuthenticationFilter extends OncePerRequestFilter implements IAuthenticationUserInfoServicePort {
-
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
-
     @Value("${jwt.secret}")
     private String secret;
 
@@ -34,23 +32,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements IAu
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
         try {
-            logger.debug("Iniciando JwtAuthenticationFilter");
-            // Obtener el token JWT del encabezado de autorización
+
             String tokenHeader = extractTokenFromHeader(request.getHeader("Authorization"));
 
-            // Validar y autenticar el token JWT
             if (tokenHeader != null) {
                 String role = extractRoleFromToken(tokenHeader);
                 List<String> roleList = Collections.singletonList(role);
                 Authentication authentication = new JwtAuthenticationToken(tokenHeader, roleList);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
-                logger.debug("Token válido, autenticando...");
             }
         } catch (Exception e) {
-            // Manejo de excepciones en caso de errores durante la validación o autenticación del token
+
             SecurityContextHolder.clearContext();
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            logger.error("Error durante la validación o autenticación del token: {}", e.getMessage());
             return;
         }
 
@@ -64,12 +58,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements IAu
         return null;
     }
 
-
-
     private String extractRoleFromToken(String token) {
         Claims claims = Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(token).getBody();
         List<String> roles = (List<String>) claims.get("roles");
-        String role = roles.get(0); // Obtener el primer elemento del array
+        String role = roles.get(0);
         return role;
     }
 

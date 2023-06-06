@@ -41,12 +41,12 @@ public class JwtAuthenticationToken implements Authentication {
 
     @Override
     public boolean isAuthenticated() {
-        return true; // O implementa lógica para verificar si el token es válido
+        return true;
     }
 
     @Override
     public void setAuthenticated(boolean isAuthenticated) throws IllegalArgumentException {
-        // No se necesita implementar en este caso
+
     }
 
     @Override

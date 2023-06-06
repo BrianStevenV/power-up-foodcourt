@@ -13,7 +13,7 @@ public class Constants {
     public static final String DESCRIPTION_SEA_DISHES= "Edible marine creatures.";
     public static final String DESCRIPTION_MEAT_DISHES = "Animal flesh for consumption.";
 
-
+    public static final String WRONG_CREDENTIALS_MESSAGE = "Wrong credentials or role not allowed";
     public static final String NO_PROVIDER_PERMISSION = "The Role is not allowed for the action.";
     public static final String DATA_DUPLICATE_RESTAURANT_DTO = "The name or NIT registered is already exist in the database.";
 
