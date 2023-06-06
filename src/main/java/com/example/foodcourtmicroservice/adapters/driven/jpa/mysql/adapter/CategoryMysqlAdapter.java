@@ -17,6 +17,5 @@ public class CategoryMysqlAdapter implements ICategoryPersistencePort {
         Optional<CategoryPlateEntity> categoryEntity = categoryRepository.findByName(name);
         return categoryEntity.map(CategoryPlateEntity::getId).orElseThrow(() -> new CategoryNotFoundException());
     }
-    //TODO: eliminar metodo saveCategory, no hace nada.
-    // anadir puerto
+
 }

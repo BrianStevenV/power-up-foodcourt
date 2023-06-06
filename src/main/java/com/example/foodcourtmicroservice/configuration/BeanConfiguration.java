@@ -2,13 +2,12 @@ package com.example.foodcourtmicroservice.configuration;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.CategoryMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantMysqlAdapter;
-import com.example.foodcourtmicroservice.configuration.security.JwtAuthenticationFilter;
 import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
 import com.example.foodcourtmicroservice.domain.api.IRestaurantServicePort;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantPersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.PlateMysqlAdapter;
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantFeignClient;
+import com.example.foodcourtmicroservice.adapters.driving.http.controller.RestaurantFeignClient;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.FeignRestaurantMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IPlateEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
@@ -59,7 +58,6 @@ public class BeanConfiguration {
         return new CategoryMysqlAdapter(categoryRepository);
     }
 
-    //No falta service port?
 
     @Bean
     public IPlatePersistencePort platePersistencePort() {

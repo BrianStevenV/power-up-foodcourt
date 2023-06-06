@@ -52,14 +52,5 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
         return platePage.map(plateEntityMapper::toPlatePaginationResponseDto);
     }
 
-    //TODO: MENTOR@ DE PRAGMA
-
-    //TODO:Aquí entra una cuestión bastante interesante. He estado dialogando con algunos mentores de Pragma y se ha comunicado que en el proyecto:
-
-    //TODO:Un factor muy importante es la aplicación correcta de la arquitectura de puertos y adaptadores. He estado manejando lógica de filtrado
-    //TODO:en esta capa adapter. Sin embargo, cuando lo presenté a los mentores, ellos recomendaron que sigamos de manera estricta la arquitectura,
-    //TODO:de manera que, por recomendación, migre toda la lógica de filtrado a la capa de dominio. Es por esa razón que aquí se presenta una duplicación de código
-    //TODO:infringiendo así el principio DRY (Don't Repeat Yourself). Me gustaría conocer si es correcto o no para la normativa del proyecto este enfoque,
-    //TODO:ya que rompe un principio de diseño. Muchas gracias. Estaré atento a su respuesta.
 
 }

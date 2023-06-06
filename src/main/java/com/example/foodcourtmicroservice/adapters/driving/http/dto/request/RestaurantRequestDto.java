@@ -1,7 +1,7 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.dto.request;
 
-
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +25,7 @@ public class RestaurantRequestDto {
     @Pattern(regexp = "^[0-9]+$")
     @NotBlank
     private String nit;
+    @NotNull
     private Long idOwner;
-    //TODO: I did change String to Long
 
 }

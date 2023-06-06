@@ -16,6 +16,5 @@ public class UserResponseDto {
     private LocalDate birthdate;
     private String password;
     private RoleResponseDto idRole;
-
-    //TODO: ACABO DE AGREGAR EL ID.
+    
 }

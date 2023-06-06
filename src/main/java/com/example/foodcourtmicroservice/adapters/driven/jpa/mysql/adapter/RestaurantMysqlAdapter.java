@@ -1,7 +1,6 @@
 package com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.entity.RestaurantEntity;
-import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.PaginationException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.RestaurantEntityNotFoundException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.IRestaurantEntityMapper;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.IRestaurantRepository;
@@ -33,5 +32,5 @@ public class RestaurantMysqlAdapter implements IRestaurantPersistencePort {
     public Page<RestaurantPaginationResponseDto> getPaginationRestaurants(Integer sizePage, String filter) {
         Pageable pageable = PageRequest.of(0, sizePage, Sort.by(filter).ascending());
         return restaurantRepository.findAll(pageable).map(restaurantEntityMapper::toRestaurantPaginationResponseDto);
-    }//no necesita exception aqui, sino en el dto.
+    }
 }

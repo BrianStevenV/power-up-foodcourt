@@ -1,4 +1,4 @@
-package com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter;
+package com.example.foodcourtmicroservice.adapters.driving.http.controller;
 
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.UserResponseDto;

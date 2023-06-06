@@ -123,7 +123,6 @@ public class RestaurantRestController {
         }
         return plateHandler.getPaginationPlates(idRestaurant, pageSize, sortBy, idCategory);
     }
-    //TODO: Put exception error input DTO.
 
-    //TODO: To apply @Valid in the @RequestBody of endpoint's.
+
 }

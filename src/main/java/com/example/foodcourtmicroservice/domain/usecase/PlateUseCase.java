@@ -40,14 +40,13 @@ public class PlateUseCase implements IPlateServicePort {
             plate.setDescription(plate.getDescription());
             platePersistencePort.savePlate(plate);
         } else {
-            throw new IdPlateNotFoundException(Constants.ID_UPDATE_NOT_FOUND);
+            throw new IdPlateNotFoundException();
         }
     }
 
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         String id = authenticationUserInfoServicePort.getIdentifierUserFromToken();
-        System.out.println(id);
         Plate updatedPlate = platePersistencePort.statusEnabledPlate(plate);
         if (updatedPlate != null) {
             updatedPlate.setEnabled(enabled);
