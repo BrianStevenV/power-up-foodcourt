@@ -31,7 +31,6 @@ public class PlateUseCase implements IPlateServicePort {
         plate.setIdCategory(idCategory);
         plate.setIdRestaurant(idRestaurant);
         platePersistencePort.savePlate(plate);
-
     }
 
     @Override
@@ -45,7 +44,6 @@ public class PlateUseCase implements IPlateServicePort {
         }
     }
 
-    //TODO: sino funciona, crear el persistence de update status
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         String id = authenticationUserInfoServicePort.getIdentifierUserFromToken();

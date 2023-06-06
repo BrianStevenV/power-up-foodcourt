@@ -8,6 +8,7 @@ import com.example.foodcourtmicroservice.domain.model.Restaurant;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantExternalPersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,6 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -39,13 +41,22 @@ public class RestaurantFeignUseCaseTest {
     }
 
     @Test
+    @DisplayName("Test: getUserByDni - Success")
     public void getUserByDniMethodSuccessfulTest() {
+        // Arrange
+
         UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
-        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+
         Long idNumber = 20L;
+
+        // Act
+
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
         UserResponseDto result = restaurantFeignClient.getUserByDni(idNumber);
+
+        // Assert
         assertNotNull(result);
         assertEquals("123", result.getDniNumber());
         assertEquals("Prueba", result.getName());
@@ -54,13 +65,21 @@ public class RestaurantFeignUseCaseTest {
     }
 
     @Test
+    @DisplayName("Test: getUserByDni - Failure (NoProviderException)")
     public void getUserByDniMethodFailureTest(){
+        // Arrange
         UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
+
+        Long idNumber = 20L;
+
+        // Act
+
         when(restaurantFeignClient.getUserByDni(anyLong()))
                 .thenThrow(NoProviderException.class);
-        Long idNumber = 20L;
+
+        // Assert
         assertThrows(NoProviderException.class,
                 () -> restaurantFeignClient.getUserByDni(idNumber));
 
@@ -68,20 +87,80 @@ public class RestaurantFeignUseCaseTest {
     }
 
     @Test
-    public void saveRestaurantServiceFeignTest(){
+    @DisplayName("Test: saveRestaurantServiceFeign - Success")
+    public void saveRestaurantServiceFeignSuccessTest(){
+        // Arrange
+
+        Long idNumber = 20L;
+
         UserResponseDto userResponseDto = new UserResponseDto(20L,"123", "Prueba", "Prueba apellido",
                 "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
                 "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
-        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
-        Long idNumber = 20L;
-        UserResponseDto result = restaurantFeignClient.getUserByDni(idNumber);
+
         Restaurant restaurantRequest = new Restaurant(20L,"Prueba","Java Street","3192621110",
                 "Image","34512",4L);
+
+        // Act
+
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+        UserResponseDto result = restaurantFeignClient.getUserByDni(idNumber);
         feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequest);
+
+        // Assert
+
         verify(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequest);
 
     }
 
-    // NO SE HACE VALIDACIONES SI LA INFORMACION DE RESTAURANTREQUESTDTO ES CORRECTA POR QUE ESO SE ENCARGA EL @VALID EN EL CONTROLLER
+    @Test
+    @DisplayName("Test: saveRestaurantServiceFeign - Failure (NoProviderException)")
+    public void saveRestaurantServiceFeignExceptionTest() {
+        // Arrange
+
+        UserResponseDto userResponseDto = new UserResponseDto(20L, "123", "Prueba", "Prueba apellido",
+                "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
+                "string", new RoleResponseDto("PROVIDER_ROLE", "PROVIDER_ROLE"));
+
+        Restaurant restaurantRequest = new Restaurant(20L, "Prueba", "Java Street", "3192621110",
+                "Image", "34512", 4L);
+
+        // Act
+
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+        doThrow(new NoProviderException()).when(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequest);
+
+        // Assert
+
+        assertThrows(NoProviderException.class, () -> {
+            feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequest);
+        });
+
+        verify(restaurantExternalPersistencePort).saveRestaurantPersistenceFeign(restaurantRequest);
+    }
+
+    @Test
+    @DisplayName("Test: saveRestaurantServiceFeign - Failure (Invalid Role)")
+    public void saveRestaurantServiceFeignInvalidUserRoleTest() {
+        // Arrange
+
+        UserResponseDto userResponseDto = new UserResponseDto(20L, "123", "Prueba", "Prueba apellido",
+                "email@example.com", "3126805081", LocalDate.of(2023, 3, 30),
+                "string", new RoleResponseDto("INVALID_ROLE", "INVALID_ROLE")); // Rol inválido
+
+        Restaurant restaurantRequest = new Restaurant(20L, "Prueba", "Java Street", "3192621110",
+                "Image", "34512", 4L);
+
+        // Act
+
+        when(restaurantFeignClient.getUserByDni(anyLong())).thenReturn(userResponseDto);
+
+        // Assert
+
+        assertThrows(NoProviderException.class, () -> {
+            feignClientRestaurantUseCase.saveRestaurantServiceFeign(restaurantRequest);
+        });
+    }
+
+
 
 }

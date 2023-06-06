@@ -32,31 +32,56 @@ public class RestaurantUseCaseTest {
     }
 
     @Test
-    public void getByNameRestaurantSucesfullTest(){
+    @DisplayName("Test: getByNameRestaurant - Success")
+    public void getByNameRestaurantSuccessfulTest(){
+        // Arrange
+
         String name = "Mazorquita";
+
+        // Act
+
         restaurantUseCase.getByNameRestaurant(name);
+
+        //Assert
+
         verify(restaurantPersistencePort).getByNameRestaurant(name);
     }
 
     @Test
     @DisplayName("Test: getByNameRestaurant - Failure (RestaurantEntityNotFoundException)")
     public void getByNameRestaurantFailureTest() {
+        // Arrange
+
         String name = "Jefferson";
+
+        // Act
+
         when(restaurantPersistencePort.getByNameRestaurant(name))
                 .thenThrow(RestaurantEntityNotFoundException.class);
+
+        // Assert
+
         assertThrows(RestaurantEntityNotFoundException.class,
                 () -> restaurantUseCase.getByNameRestaurant(name));
         verify(restaurantPersistencePort).getByNameRestaurant(name);
     }
 
     @Test
-    public void getPaginationRestaurantsSucessfullTest(){
+    @DisplayName("Test: getPaginationRestaurant - Success")
+    public void getPaginationRestaurantsSuccessfulTest(){
+        // Arrange
+
         Integer sizePage = 5;
         String filter = "name";
+
+        // Act
+
         restaurantUseCase.getPaginationRestaurants(sizePage, filter);
+
+        // Assert
+        
         verify(restaurantPersistencePort).getPaginationRestaurants(sizePage, filter);
     }
 
-    //TODO: hacer test de failure al servicio que falta
 
 }
