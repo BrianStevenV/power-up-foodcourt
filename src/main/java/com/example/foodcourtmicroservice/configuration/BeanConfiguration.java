@@ -1,9 +1,16 @@
 package com.example.foodcourtmicroservice.configuration;
 
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.CategoryMysqlAdapter;
+import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.Order.OrderMysqlAdapter;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.RestaurantMysqlAdapter;
+import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.Order.IOrderEntityMapper;
+import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.mappers.Order.IOrderPlateEntityMapper;
+import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.IOrderPlateRepository;
+import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.repositories.IOrderRepository;
 import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
+import com.example.foodcourtmicroservice.domain.api.IOrderServicePort;
 import com.example.foodcourtmicroservice.domain.api.IRestaurantServicePort;
+import com.example.foodcourtmicroservice.domain.spi.IOrderPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantPersistencePort;
 import com.example.foodcourtmicroservice.domain.usecase.FeignClientRestaurantUseCase;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.adapter.PlateMysqlAdapter;
@@ -19,6 +26,7 @@ import com.example.foodcourtmicroservice.domain.api.IRestaurantExternalServicePo
 import com.example.foodcourtmicroservice.domain.spi.ICategoryPersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IPlatePersistencePort;
 import com.example.foodcourtmicroservice.domain.spi.IRestaurantExternalPersistencePort;
+import com.example.foodcourtmicroservice.domain.usecase.OrderUseCase;
 import com.example.foodcourtmicroservice.domain.usecase.PlateUseCase;
 import com.example.foodcourtmicroservice.domain.usecase.RestaurantUseCase;
 import lombok.RequiredArgsConstructor;
@@ -29,20 +37,37 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class BeanConfiguration {
 
-    //Restaurant
+    // Restaurant
     private final IRestaurantRepository restaurantRepository;
     private final IRestaurantEntityMapper restaurantEntityMapper;
 
-    //Feign client
+    // Feign client
     private final RestaurantFeignClient restaurantFeignClient;
 
-    //Plate
+    // Plate
     private final IPlateRepository plateRepository;
     private final IPlateEntityMapper plateEntityMapper;
 
-    //Category
+    // Category
     private final ICategoryRepository categoryRepository;
     private final IAuthenticationUserInfoServicePort authenticationUserInfoServicePort;
+
+    // Order
+    private final IOrderRepository orderRepository;
+    private final IOrderEntityMapper orderEntityMapper;
+
+    // OrderPlate
+    private final IOrderPlateRepository orderPlateRepository;
+    private final IOrderPlateEntityMapper orderPlateEntityMapper;
+
+    @Bean
+    public IOrderPersistencePort orderPersistencePort(){
+        return new OrderMysqlAdapter(orderRepository, orderPlateRepository, orderEntityMapper,  orderPlateEntityMapper);
+    }
+    @Bean
+    public IOrderServicePort orderServicePort(){
+        return new OrderUseCase(orderPersistencePort(), platePersistencePort(), restaurantPersistencePort(), authenticationUserInfoServicePort);
+    }
     @Bean
     public IRestaurantPersistencePort restaurantPersistencePort(){
         return new RestaurantMysqlAdapter(restaurantRepository, restaurantEntityMapper);

@@ -75,4 +75,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter implements IAu
         String tokenHeader = extractTokenFromHeader(request.getHeader("Authorization"));
         return Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(tokenHeader).getBody().getSubject();
     }
+
+    @Override
+    public Long getIdUserFromToken() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String tokenHeader = extractTokenFromHeader(request.getHeader("Authorization"));
+        Claims claims = Jwts.parser().setSigningKey(secret.getBytes()).parseClaimsJws(tokenHeader).getBody();
+        Long id = claims.get("id", Long.class);
+        return id;
+    }
+
 }

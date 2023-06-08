@@ -9,7 +9,8 @@ import java.util.Optional;
 
 public interface IPlatePersistencePort {
     void savePlate(Plate plate);
-    Optional<PlateEntity> findById(Long id);
+    Optional<PlateEntity> findByIdPlateEntity(Long id);
+    Optional<Long> findById(Long id);
 
     Plate statusEnabledPlate(Plate plate);
 

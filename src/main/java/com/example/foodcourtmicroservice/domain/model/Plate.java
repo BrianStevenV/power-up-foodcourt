@@ -6,7 +6,6 @@ public class Plate {
     private String description;
     private Double price;
     private String urlImage;
-
     private Boolean enabled = true;
     private Long idCategory;
     private Long idRestaurant;

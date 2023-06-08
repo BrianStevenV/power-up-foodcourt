@@ -2,7 +2,6 @@ package com.example.foodcourtmicroservice.domain.usecase;
 
 
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.PlatePaginationResponseDto;
-import com.example.foodcourtmicroservice.configuration.Constants;
 import com.example.foodcourtmicroservice.domain.api.IAuthenticationUserInfoServicePort;
 import com.example.foodcourtmicroservice.domain.api.IPlateServicePort;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
@@ -35,7 +34,7 @@ public class PlateUseCase implements IPlateServicePort {
 
     @Override
     public void updatePlate(Plate plate) {
-        if (platePersistencePort.findById(plate.getId()).isPresent()) {
+        if (platePersistencePort.findByIdPlateEntity(plate.getId()).isPresent()) {
             plate.setPrice(plate.getPrice());
             plate.setDescription(plate.getDescription());
             platePersistencePort.savePlate(plate);
@@ -47,6 +46,7 @@ public class PlateUseCase implements IPlateServicePort {
     @Override
     public void statusEnabledPlate(Boolean enabled, Plate plate) {
         String id = authenticationUserInfoServicePort.getIdentifierUserFromToken();
+        System.out.println(" ID " + id);
         Plate updatedPlate = platePersistencePort.statusEnabledPlate(plate);
         if (updatedPlate != null) {
             updatedPlate.setEnabled(enabled);

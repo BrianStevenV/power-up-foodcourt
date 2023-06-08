@@ -4,6 +4,7 @@ import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.Ca
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.DataDuplicateViolationException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.PaginationException;
 import com.example.foodcourtmicroservice.adapters.driven.jpa.mysql.exceptions.RestaurantEntityNotFoundException;
+import com.example.foodcourtmicroservice.domain.exceptions.ClientHasOrderException;
 import com.example.foodcourtmicroservice.domain.exceptions.IdPlateNotFoundException;
 import com.example.foodcourtmicroservice.domain.exceptions.NoProviderException;
 import com.example.foodcourtmicroservice.domain.exceptions.PlateNotFoundException;
@@ -22,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.example.foodcourtmicroservice.configuration.Constants.CATEGORY_EXCEPTION;
+import static com.example.foodcourtmicroservice.configuration.Constants.CLIENT_HAS_ORDER_EXCEPTION;
 import static com.example.foodcourtmicroservice.configuration.Constants.DATA_DUPLICATE_RESTAURANT_DTO;
 import static com.example.foodcourtmicroservice.configuration.Constants.ID_UPDATE_NOT_FOUND;
 import static com.example.foodcourtmicroservice.configuration.Constants.NO_PROVIDER_PERMISSION;
@@ -94,5 +96,11 @@ public class ControllerAdvisor {
     public ResponseEntity<Map<String, String>> handleAuthenticationException(AuthenticationException noDataFoundException) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, WRONG_CREDENTIALS_MESSAGE));
+    }
+
+    @ExceptionHandler(ClientHasOrderException.class)
+    public ResponseEntity<Map<String, String>> handleClientHasOrderException(ClientHasOrderException clientHasOrderException){
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Collections.singletonMap(RESPONSE_ERROR_MESSAGE_KEY, CLIENT_HAS_ORDER_EXCEPTION));
     }
 }

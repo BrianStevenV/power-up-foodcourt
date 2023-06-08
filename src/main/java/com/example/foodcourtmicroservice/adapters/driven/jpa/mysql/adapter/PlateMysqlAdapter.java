@@ -25,10 +25,17 @@ public class PlateMysqlAdapter implements IPlatePersistencePort {
     }
 
     @Override
-    public Optional<PlateEntity> findById(Long id) {
+    public Optional<PlateEntity> findByIdPlateEntity(Long id) {
         Optional<PlateEntity> plateEntity = plateRepository.findById(id);
         return plateEntity;
     }
+
+    @Override
+    public Optional<Long> findById(Long id) {
+        Optional<PlateEntity> plateEntityOptional = plateRepository.findById(id);
+        return plateEntityOptional.map(PlateEntity::getId);
+    }
+
 
     @Override
     public Plate statusEnabledPlate(Plate plate) {

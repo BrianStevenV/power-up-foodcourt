@@ -1,5 +1,6 @@
 package com.example.foodcourtmicroservice.adapters.driving.http.controller;
 
+import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.Order.OrderRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.PlateStatusUpdateRequestDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.request.RestaurantRequestDto;
@@ -8,6 +9,7 @@ import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.Plat
 import com.example.foodcourtmicroservice.adapters.driving.http.dto.response.RestaurantPaginationResponseDto;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IPlateHandler;
 import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IRestaurantHandler;
+import com.example.foodcourtmicroservice.adapters.driving.http.handlers.IOrderHandler;
 import com.example.foodcourtmicroservice.configuration.Constants;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,9 +38,10 @@ import java.util.Map;
 @RequestMapping("/foodCourt/")
 @RequiredArgsConstructor
 @SecurityRequirement(name = "jwt")
-public class RestaurantRestController {
+public class FoodCourtRestController {
     private final IRestaurantHandler restaurantHandler;
     private final IPlateHandler plateHandler;
+    private final IOrderHandler orderHandler;
     @Operation(summary = "Add a new Restaurant",
             responses = {
                     @ApiResponse(responseCode = "201", description = "Restaurant created",
@@ -122,6 +125,20 @@ public class RestaurantRestController {
             idCategory = plateHandler.getByNameCategory(nameCategory);
         }
         return plateHandler.getPaginationPlates(idRestaurant, pageSize, sortBy, idCategory);
+    }
+
+    @Operation(summary = "Add a new Order",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Order created",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Map"))),
+                    @ApiResponse(responseCode = "409", description = "Order already exists",
+                            content = @Content(mediaType = "application/json", schema = @Schema(ref = "#/components/schemas/Error")))})
+    @PreAuthorize("hasAuthority('CLIENT_ROLE')")
+    @PostMapping("order/")
+    public ResponseEntity<Map<String, String>> createOrder(@Valid @RequestBody OrderRequestDto orderRequestDto){
+        orderHandler.createOrder(orderRequestDto);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(Collections.singletonMap(Constants.RESPONSE_MESSAGE_KEY, Constants.ORDER_CREATED_MESSAGE));
     }
 
 

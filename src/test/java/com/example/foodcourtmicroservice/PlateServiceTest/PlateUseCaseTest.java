@@ -123,8 +123,8 @@ public class PlateUseCaseTest {
 
         //Act
 
-        when(platePersistencePort.findById(id)).thenReturn(Optional.of(plateEntity));
-        Optional<PlateEntity> optionalPlateEntity = platePersistencePort.findById(id);
+        when(platePersistencePort.findByIdPlateEntity(id)).thenReturn(Optional.of(plateEntity));
+        Optional<PlateEntity> optionalPlateEntity = platePersistencePort.findByIdPlateEntity(id);
         PlateEntity retrievedPlateEntity = optionalPlateEntity.get();
 
         // Assert
@@ -132,7 +132,7 @@ public class PlateUseCaseTest {
         assertTrue(optionalPlateEntity.isPresent());
         assertEquals(id, retrievedPlateEntity.getId());
         assertEquals("Mazorquita", retrievedPlateEntity.getName());
-        verify(platePersistencePort).findById(id);
+        verify(platePersistencePort).findByIdPlateEntity(id);
     }
 
     @Test
@@ -141,15 +141,15 @@ public class PlateUseCaseTest {
         // Arrange
 
         Long id = 123L;
-        Optional<PlateEntity> optionalPlateEntity = platePersistencePort.findById(id);
+        Optional<PlateEntity> optionalPlateEntity = platePersistencePort.findByIdPlateEntity(id);
 
         // Act
 
-        when(platePersistencePort.findById(id)).thenReturn(Optional.empty());
+        when(platePersistencePort.findByIdPlateEntity(id)).thenReturn(Optional.empty());
 
         // Assert
         assertFalse(optionalPlateEntity.isPresent());
-        verify(platePersistencePort).findById(id);
+        verify(platePersistencePort).findByIdPlateEntity(id);
     }
 
     @Test
@@ -165,12 +165,12 @@ public class PlateUseCaseTest {
 
         // Act
 
-        when(platePersistencePort.findById(id)).thenReturn(Optional.empty());
+        when(platePersistencePort.findByIdPlateEntity(id)).thenReturn(Optional.empty());
 
         // Assert
 
         assertThrows(IdPlateNotFoundException.class, () -> plateUseCase.updatePlate(plate));
-        verify(platePersistencePort).findById(id);
+        verify(platePersistencePort).findByIdPlateEntity(id);
         verify(platePersistencePort, never()).savePlate(any(Plate.class));
     }
 
@@ -185,7 +185,7 @@ public class PlateUseCaseTest {
         plate.setPrice(50.0);
         plate.setDescription("Updated Plate");
 
-        when(platePersistencePort.findById(id)).thenReturn(Optional.of(new PlateEntity()));
+        when(platePersistencePort.findByIdPlateEntity(id)).thenReturn(Optional.of(new PlateEntity()));
 
         // Act
 
@@ -193,7 +193,7 @@ public class PlateUseCaseTest {
 
         // Assert
 
-        verify(platePersistencePort).findById(id);
+        verify(platePersistencePort).findByIdPlateEntity(id);
         verify(platePersistencePort).savePlate(plate);
     }
 

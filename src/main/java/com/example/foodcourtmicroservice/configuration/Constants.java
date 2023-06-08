@@ -14,6 +14,7 @@ public class Constants {
     public static final String DESCRIPTION_MEAT_DISHES = "Animal flesh for consumption.";
 
     public static final String WRONG_CREDENTIALS_MESSAGE = "Wrong credentials or role not allowed";
+    public static final String CLIENT_HAS_ORDER_EXCEPTION = "Customer already has an order, it must first be fulfilled in order to assign another.";
     public static final String NO_PROVIDER_PERMISSION = "The Role is not allowed for the action.";
     public static final String DATA_DUPLICATE_RESTAURANT_DTO = "The name or NIT registered is already exist in the database.";
 
@@ -30,7 +31,8 @@ public class Constants {
 
     public static final String RESPONSE_MESSAGE_KEY = "message";
     public static final String RESTAURANT_CREATED_MESSAGE = "Restaurant created successfully.";
-    public static final String PLATE_CREATED_MESSAGE = "Plate created succesfully.";
+    public static final String PLATE_CREATED_MESSAGE = "Plate created successfully.";
+    public static final String ORDER_CREATED_MESSAGE = "Order created successfully.";
     public static final Long PROVIDER_ROLE_ID = 3L;
     public static final String PROVIDER_DESCRPTION = "PROVIDER_ROLE";
     public static final String USER_PERMISSION_DENIED = "User has not permission appropiate.";
